@@ -45,6 +45,13 @@ class Auth {
     showAuthForms() {
         document.getElementById('authForms').classList.remove('hidden');
         document.getElementById('mainContent').classList.add('hidden');
+        document.body.classList.add('auth-active');
+    }
+
+    hideAuthForms() {
+        document.getElementById('authForms').classList.add('hidden');
+        document.getElementById('mainContent').classList.remove('hidden');
+        document.body.classList.remove('auth-active');
     }
 
     showMainContent() {
@@ -83,6 +90,7 @@ class Auth {
             this.token = result.token;
             window.toast.success('Login successful! Welcome back!');
             window.location.reload();
+            this.hideAuthForms();
         } catch (error) {
             window.toast.error(error.message);
             document.getElementById('loginError').textContent = error.message;
@@ -121,6 +129,7 @@ class Auth {
         localStorage.removeItem('token');
         this.token = null;
         window.location.reload(); // Reload trang sau khi logout
+        this.showAuthForms();
     }
 }
 

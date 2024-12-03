@@ -2459,23 +2459,29 @@ body {
 
 /* Responsive adjustments */
 @media screen and (max-width: 768px) {
-    .navigation {
-        display: block; /* Hiển thị trên mobile */
+    /* Chỉ hiển thị navigation khi ở main content và không ở auth form */
+    body:not(.auth-active) .navigation {
+        display: block;
+    }
+    
+    /* Ẩn navigation khi ở auth form */
+    body.auth-active .navigation {
+        display: none;
     }
     
     .app-sidebar {
-        display: none; /* Ẩn sidebar trên mobile */
+        display: none;
     }
     
     .content-wrapper {
         margin-left: 0;
-        padding-bottom: 70px; /* Thêm padding để tránh bị che bởi navigation */
+        padding-bottom: 70px;
     }
 
     .action-buttons {
-        bottom: 80px; /* Đặt vị trí phía trên navigation bar */
+        bottom: 80px;
     }
-} 
+}
 
 .loading-message {
     text-align: center;

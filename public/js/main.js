@@ -589,15 +589,14 @@ class ImageUploader {
                 }
             });
 
-            // Reset state
-            this.currentFolderId = null;
-            this.folderPath = [];
-
             try {
-                // Xử lý điều hướng
                 switch(view) {
                     case 'home':
-                        // Cập nhật breadcrumb và UI ngay lập tức
+                        // Reset state và load home view
+                        this.currentFolderId = null;
+                        this.folderPath = [];
+                        
+                        // Cập nhật breadcrumb ngay lập tức
                         const breadcrumb = document.getElementById('breadcrumb');
                         const foldersContainer = document.getElementById('foldersContainer');
                         const galleryContainer = document.getElementById('imageGallery');
@@ -609,8 +608,8 @@ class ImageUploader {
                             `;
                         }
 
-                        // Gọi API để lấy dữ liệu
-                        const response = await fetch(`/api/folders/`, {
+                        // Load data
+                        const response = await fetch('/api/folders/', {
                             headers: {
                                 'Authorization': `Bearer ${this.token}`
                             }
@@ -620,28 +619,32 @@ class ImageUploader {
 
                         const data = await response.json();
                         
-                        // Render dữ liệu
-                        if (foldersContainer && data.folders) {
-                            this.renderFolders(data.folders);
-                        } else if (foldersContainer) {
-                            foldersContainer.innerHTML = '<div class="empty-message">No folders found</div>';
+                        // Render data
+                        if (foldersContainer) {
+                            if (data.folders && data.folders.length > 0) {
+                                this.renderFolders(data.folders);
+                            } else {
+                                foldersContainer.innerHTML = '<div class="empty-message">No folders found</div>';
+                            }
                         }
-
-                        if (galleryContainer && data.files) {
-                            this.renderFiles(data.files);
-                        } else if (galleryContainer) {
-                            galleryContainer.innerHTML = '<div class="empty-message">No files found</div>';
+                        
+                        if (galleryContainer) {
+                            if (data.files && data.files.length > 0) {
+                                this.renderFiles(data.files);
+                            } else {
+                                galleryContainer.innerHTML = '<div class="empty-message">No files found</div>';
+                            }
                         }
                         break;
 
                     case 'recent':
-                        this.loadRecentFiles();
+                        await this.loadRecentFiles();
                         break;
                     case 'starred':
-                        this.loadStarredFiles();
+                        await this.loadStarredFiles();
                         break;
                     case 'trash':
-                        this.loadTrashFiles();
+                        await this.loadTrashFiles();
                         break;
                 }
             } catch (error) {
@@ -659,23 +662,30 @@ class ImageUploader {
                     galleryContainer.innerHTML = '<div class="error-message">Failed to load files</div>';
                 }
             }
-
-            // Đóng sidebar trên mobile nếu đang mở
-            if (window.innerWidth <= 768) {
-                const sidebar = document.querySelector('.app-sidebar');
-                if (sidebar) {
-                    sidebar.style.display = 'none';
-                }
-            }
         };
 
         // Xử lý click cho cả mobile navigation và sidebar
         [...navLinks, ...sidebarLinks].forEach(link => {
-            link.addEventListener('click', (e) => {
+            link.addEventListener('click', async (e) => {
                 e.preventDefault();
                 e.stopPropagation();
+                
                 const view = link.dataset.view;
-                handleNavigation(view);
+                
+                // Hiển thị loading state trước khi xử lý
+                const foldersContainer = document.getElementById('foldersContainer');
+                const galleryContainer = document.getElementById('imageGallery');
+                
+                if (foldersContainer) {
+                    foldersContainer.innerHTML = '<div class="loading-message">Loading folders...</div>';
+                }
+                
+                if (galleryContainer) {
+                    galleryContainer.innerHTML = '<div class="loading-message">Loading files...</div>';
+                }
+                
+                // Xử lý navigation
+                await handleNavigation(view);
             });
         });
     }

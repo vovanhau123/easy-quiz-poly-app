@@ -1,15 +1,17 @@
-const { Pool } = require('pg');
-require('dotenv').config();
+const sqlite3 = require("sqlite3").verbose();
+const { fileDbPath } = require("./config/database");
 
-const pool = new Pool({
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    database: process.env.DB_NAME,
-    password: process.env.DB_PASSWORD,
-    port: process.env.DB_PORT,
-});
+const db = {
+  query: (sql, params = []) => {
+    return new Promise((resolve, reject) => {
+      const database = new sqlite3.Database(fileDbPath);
+      database.all(sql.replace(/\$\d+/g, "?"), params, (err, rows) => {
+        database.close();
+        if (err) reject(err);
+        else resolve({ rows });
+      });
+    });
+  },
+};
 
-module.exports = {
-    query: (text, params) => pool.query(text, params),
-    pool
-}; 
+module.exports = db;

@@ -11,6 +11,7 @@ class ImageUploader {
         this.setupViewButtons();
         this.setupImageViewer();
         this.loadStorageInfo();
+        this.setupMobileNavigation();
 
         // Đảm bảo image viewer modal được ẩn khi khởi tạo
         const imageViewerModal = document.getElementById('imageViewerModal');
@@ -201,7 +202,7 @@ class ImageUploader {
         }
     }
 
-    async loadCurrentFolder() {
+    async loadCurrentFolder(isHome = false) {
         try {
             console.log('Loading folder:', this.currentFolderId);
 
@@ -218,21 +219,65 @@ class ImageUploader {
 
             const { currentFolder, folderPath, folders, files } = data;
 
-            this.folderPath = folderPath || [];
-            if (currentFolder && !this.folderPath.find(f => f.id === currentFolder.id)) {
-                this.folderPath.push(currentFolder);
+            // Xử lý breadcrumb
+            const breadcrumb = document.getElementById('breadcrumb');
+            if (breadcrumb) {
+                if (isHome || !this.currentFolderId) {
+                    breadcrumb.innerHTML = `
+                        <i class="fas fa-folder"></i>
+                        <span class="breadcrumb-item" data-id="">My Drive</span>
+                    `;
+                } else {
+                    this.folderPath = folderPath || [];
+                    if (currentFolder && !this.folderPath.find(f => f.id === currentFolder.id)) {
+                        this.folderPath.push(currentFolder);
+                    }
+                    this.updateBreadcrumb();
+                }
             }
 
-            this.updateBreadcrumb();
-            this.renderFolders(folders);
-            this.renderFiles(files);
+            // Render folders and files
+            const foldersContainer = document.getElementById('foldersContainer');
+            const galleryContainer = document.getElementById('imageGallery');
+            
+            if (foldersContainer) {
+                if (folders && folders.length > 0) {
+                    this.renderFolders(folders);
+                } else {
+                    foldersContainer.innerHTML = '<div class="empty-message">No folders found</div>';
+                }
+            }
+            
+            if (galleryContainer) {
+                if (files && files.length > 0) {
+                    this.renderFiles(files);
+                } else {
+                    galleryContainer.innerHTML = '<div class="empty-message">No files found</div>';
+                }
+            }
+
         } catch (error) {
             console.error('Error loading folder contents:', error);
+            window.toast?.error('Failed to load folder contents');
+
+            // Hiển thị thông báo lỗi
+            const foldersContainer = document.getElementById('foldersContainer');
+            const galleryContainer = document.getElementById('imageGallery');
+            
+            if (foldersContainer) {
+                foldersContainer.innerHTML = '<div class="error-message">Failed to load folders</div>';
+            }
+            
+            if (galleryContainer) {
+                galleryContainer.innerHTML = '<div class="error-message">Failed to load files</div>';
+            }
         }
     }
 
     updateBreadcrumb() {
         const breadcrumb = document.getElementById('breadcrumb');
+        if (!breadcrumb) return; // Thoát nếu không tìm thấy breadcrumb
+
         let html = '<span class="breadcrumb-item" data-id="">My Drive</span>';
         
         this.folderPath.forEach(folder => {
@@ -241,6 +286,7 @@ class ImageUploader {
         
         breadcrumb.innerHTML = html;
 
+        // Thêm event listeners cho breadcrumb items
         breadcrumb.querySelectorAll('.breadcrumb-item').forEach(item => {
             item.addEventListener('click', () => {
                 const folderId = item.dataset.id;
@@ -352,7 +398,42 @@ class ImageUploader {
 
     navigateToFolder(folderId) {
         this.currentFolderId = folderId;
-        this.loadCurrentFolder();
+        
+        // Nếu là home view
+        if (!folderId) {
+            this.loadHomeView();
+        } else {
+            this.loadCurrentFolder();
+        }
+    }
+
+    loadHomeView() {
+        // Reset state
+        this.currentFolderId = null;
+        this.folderPath = [];
+
+        // Cập nhật UI ngay lập tức
+        const breadcrumb = document.getElementById('breadcrumb');
+        const foldersContainer = document.getElementById('foldersContainer');
+        const galleryContainer = document.getElementById('imageGallery');
+
+        if (breadcrumb) {
+            breadcrumb.innerHTML = `
+                <i class="fas fa-folder"></i>
+                <span class="breadcrumb-item" data-id="">My Drive</span>
+            `;
+        }
+
+        if (foldersContainer) {
+            foldersContainer.innerHTML = '<div class="loading-message">Loading folders...</div>';
+        }
+
+        if (galleryContainer) {
+            galleryContainer.innerHTML = '<div class="loading-message">Loading files...</div>';
+        }
+
+        // Load data mới
+        this.loadCurrentFolder(true);
     }
 
     async handleDownload(imageId) {
@@ -493,6 +574,221 @@ class ImageUploader {
             storageFill.classList.remove('warning');
         }
     }
+
+    setupMobileNavigation() {
+        const navLinks = document.querySelectorAll('.navigation .nav-link');
+        const sidebarLinks = document.querySelectorAll('.sidebar-nav .nav-item');
+        
+        const handleNavigation = async (view) => {
+            // Cập nhật active state cho cả mobile và desktop
+            [...navLinks, ...sidebarLinks].forEach(link => {
+                if (link.dataset.view === view) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+
+            // Reset state
+            this.currentFolderId = null;
+            this.folderPath = [];
+
+            try {
+                // Xử lý điều hướng
+                switch(view) {
+                    case 'home':
+                        // Cập nhật breadcrumb và UI ngay lập tức
+                        const breadcrumb = document.getElementById('breadcrumb');
+                        const foldersContainer = document.getElementById('foldersContainer');
+                        const galleryContainer = document.getElementById('imageGallery');
+
+                        if (breadcrumb) {
+                            breadcrumb.innerHTML = `
+                                <i class="fas fa-folder"></i>
+                                <span class="breadcrumb-item" data-id="">My Drive</span>
+                            `;
+                        }
+
+                        // Gọi API để lấy dữ liệu
+                        const response = await fetch(`/api/folders/`, {
+                            headers: {
+                                'Authorization': `Bearer ${this.token}`
+                            }
+                        });
+
+                        if (!response.ok) throw new Error('Failed to load folder contents');
+
+                        const data = await response.json();
+                        
+                        // Render dữ liệu
+                        if (foldersContainer && data.folders) {
+                            this.renderFolders(data.folders);
+                        } else if (foldersContainer) {
+                            foldersContainer.innerHTML = '<div class="empty-message">No folders found</div>';
+                        }
+
+                        if (galleryContainer && data.files) {
+                            this.renderFiles(data.files);
+                        } else if (galleryContainer) {
+                            galleryContainer.innerHTML = '<div class="empty-message">No files found</div>';
+                        }
+                        break;
+
+                    case 'recent':
+                        this.loadRecentFiles();
+                        break;
+                    case 'starred':
+                        this.loadStarredFiles();
+                        break;
+                    case 'trash':
+                        this.loadTrashFiles();
+                        break;
+                }
+            } catch (error) {
+                console.error('Navigation error:', error);
+                window.toast?.error('Failed to load content');
+                
+                const foldersContainer = document.getElementById('foldersContainer');
+                const galleryContainer = document.getElementById('imageGallery');
+                
+                if (foldersContainer) {
+                    foldersContainer.innerHTML = '<div class="error-message">Failed to load folders</div>';
+                }
+                
+                if (galleryContainer) {
+                    galleryContainer.innerHTML = '<div class="error-message">Failed to load files</div>';
+                }
+            }
+
+            // Đóng sidebar trên mobile nếu đang mở
+            if (window.innerWidth <= 768) {
+                const sidebar = document.querySelector('.app-sidebar');
+                if (sidebar) {
+                    sidebar.style.display = 'none';
+                }
+            }
+        };
+
+        // Xử lý click cho cả mobile navigation và sidebar
+        [...navLinks, ...sidebarLinks].forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const view = link.dataset.view;
+                handleNavigation(view);
+            });
+        });
+    }
+
+    // Cập nhật các phương thức xử lý cho từng view
+    async loadRecentFiles() {
+        try {
+            const response = await fetch('/api/files/recent', {
+                headers: {
+                    'Authorization': `Bearer ${this.token}`
+                }
+            });
+            
+            if (!response.ok) throw new Error('Failed to load recent files');
+            
+            const data = await response.json();
+            
+            // Kiểm tra các container trước khi cập nhật
+            const foldersContainer = document.getElementById('foldersContainer');
+            const galleryContainer = document.getElementById('imageGallery');
+            const breadcrumb = document.getElementById('breadcrumb');
+            
+            if (galleryContainer) {
+                this.renderFiles(data.files);
+            }
+            
+            if (foldersContainer) {
+                foldersContainer.innerHTML = '';
+            }
+            
+            if (breadcrumb) {
+                breadcrumb.innerHTML = `
+                    <i class="fas fa-clock"></i>
+                    <span class="breadcrumb-item">Recent Files</span>
+                `;
+            }
+        } catch (error) {
+            console.error('Error loading recent files:', error);
+            window.toast?.error('Failed to load recent files');
+        }
+    }
+
+    async loadStarredFiles() {
+        try {
+            const response = await fetch('/api/files/starred', {
+                headers: {
+                    'Authorization': `Bearer ${this.token}`
+                }
+            });
+            
+            if (!response.ok) throw new Error('Failed to load starred files');
+            
+            const data = await response.json();
+            
+            const foldersContainer = document.getElementById('foldersContainer');
+            const galleryContainer = document.getElementById('imageGallery');
+            const breadcrumb = document.getElementById('breadcrumb');
+            
+            if (galleryContainer) {
+                this.renderFiles(data.files);
+            }
+            
+            if (foldersContainer) {
+                foldersContainer.innerHTML = '';
+            }
+            
+            if (breadcrumb) {
+                breadcrumb.innerHTML = `
+                    <i class="fas fa-star"></i>
+                    <span class="breadcrumb-item">Starred Files</span>
+                `;
+            }
+        } catch (error) {
+            console.error('Error loading starred files:', error);
+            window.toast?.error('Failed to load starred files');
+        }
+    }
+
+    async loadTrashFiles() {
+        try {
+            const response = await fetch('/api/files/trash', {
+                headers: {
+                    'Authorization': `Bearer ${this.token}`
+                }
+            });
+            
+            if (!response.ok) throw new Error('Failed to load trash');
+            
+            const data = await response.json();
+            
+            const foldersContainer = document.getElementById('foldersContainer');
+            const galleryContainer = document.getElementById('imageGallery');
+            const breadcrumb = document.getElementById('breadcrumb');
+            
+            if (galleryContainer) {
+                this.renderFiles(data.files);
+            }
+            
+            if (foldersContainer) {
+                foldersContainer.innerHTML = '';
+            }
+            
+            if (breadcrumb) {
+                breadcrumb.innerHTML = `
+                    <i class="fas fa-trash"></i>
+                    <span class="breadcrumb-item">Trash</span>
+                `;
+            }
+        } catch (error) {
+            console.error('Error loading trash:', error);
+            window.toast?.error('Failed to load trash');
+        }
+    }
 }
 
 // Initialize ImageUploader after DOM content is loaded
@@ -505,4 +801,4 @@ document.addEventListener('DOMContentLoaded', () => {
 // Global function for closing modals
 window.closeModal = function(modalId) {
     document.getElementById(modalId).style.display = 'none';
-}; 
+};

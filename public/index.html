@@ -1,279 +1,315 @@
 <!DOCTYPE html>
-<html lang="vi" class="light">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tìm Kiếm Câu Hỏi</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-
-        .highlight {
-            background-color: rgba(255, 255, 0, 0.3);
-            font-weight: 500;
-        }
-
-        @keyframes pulse {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.5;
-            }
-        }
-
-        .animate-pulse {
-            animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-
-        mark {
-            background-color: rgba(255, 255, 0, 0.3);
-            padding: 0 2px;
-            border-radius: 2px;
-        }
-
-        .search-container {
-            backdrop-filter: blur(10px);
-        }
-
-        /* Dark mode styles */
-        html.dark {
-            color-scheme: dark;
-        }
-
-        html.dark body {
-            background: linear-gradient(to bottom right, #1a1a2e, #16213e);
-        }
-
-        html.dark .search-container {
-            background-color: rgba(255, 255, 255, 0.9);
-        }
-
-        html.dark mark {
-            background-color: rgba(255, 255, 0, 0.3);
-            color: #000;
-        }
-
-        /* Theme toggle button */
-        .theme-toggle {
-            position: fixed;
-            top: 1rem;
-            right: 1rem;
-            padding: 0.5rem;
-            border-radius: 9999px;
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
-
-        html.dark ::-webkit-scrollbar-track {
-            background: #e5e7eb;
-        }
-
-        html.dark ::-webkit-scrollbar-thumb {
-            background: #4b5563;
-        }
-
-        html.dark ::-webkit-scrollbar-thumb:hover {
-            background: #374151;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Image Upload System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+<body>
+    <div class="particles"></div>
+    <div class="container">
+        <!-- Auth Forms -->
+        <div id="authForms" class="auth-container">
+            <div class="auth-box">
+                <div class="corner corner-tl"></div>
+                <div class="corner corner-tr"></div>
+                <div class="corner corner-bl"></div>
+                <div class="corner corner-br"></div>
 
-<body
-    class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-900 dark:to-gray-800 min-h-screen transition-colors duration-300">
-    <!-- Theme Toggle Button -->
-    <button id="themeToggle" class="theme-toggle bg-white dark:bg-white shadow-lg hover:shadow-xl">
-        <!-- Sun icon -->
-        <svg id="sunIcon" class="w-6 h-6 text-yellow-500 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-        </svg>
-        <!-- Moon icon -->
-        <svg id="moonIcon" class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-        </svg>
-    </button>
+                <div class="auth-header">
+                    <img src="images/logo.png" alt="Logo" class="auth-logo">
+                    <h1>Welcome</h1>
+                    <p class="auth-subtitle">Please login or create an account</p>
+                </div>
+                
+                <div class="tabs">
+                    <button class="tab-btn active" data-form="login">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                    <button class="tab-btn" data-form="register">
+                        <i class="fas fa-user-plus"></i> Register
+                    </button>
+                </div>
 
-    <div class="container mx-auto px-4 py-12">
-        <div class="max-w-3xl mx-auto bg-white dark:bg-white p-8 rounded-xl shadow-lg search-container">
-            <h1 class="text-3xl font-bold mb-8 text-center text-indigo-600 dark:text-indigo-700">
-                Tìm Kiếm Câu Hỏi
-            </h1>
+                <!-- Login Form -->
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="loginUsername">
+                            <i class="fas fa-user"></i>
+                            Username
+                        </label>
+                        <input 
+                            type="text" 
+                            id="loginUsername"
+                            name="username" 
+                            placeholder="Enter your username"
+                            required
+                        >
+                    </div>
 
-            <div class="relative">
-                <input type="text" id="searchInput" placeholder="Nhập câu hỏi hoặc từ khóa để tìm kiếm..." class="w-full px-6 py-4 text-lg border-2 rounded-xl
-                       focus:outline-none focus:ring-2 focus:ring-indigo-500 
-                       focus:border-indigo-500 transition-all duration-300
-                       bg-white text-gray-900
-                       dark:bg-white dark:text-gray-900 dark:border-gray-300
-                       dark:placeholder-gray-500 shadow-sm">
-                <div class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-600">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
+                    <div class="form-group">
+                        <label for="loginPassword">
+                            <i class="fas fa-lock"></i>
+                            Password
+                        </label>
+                        <div class="password-input">
+                            <input 
+                                type="password" 
+                                id="loginPassword"
+                                name="password" 
+                                placeholder="Enter your password"
+                                required
+                            >
+                            <button type="button" class="toggle-password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <p class="error-message" id="loginError"></p>
+
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Login
+                    </button>
+                </form>
+
+                <!-- Register Form -->
+                <form id="registerForm" class="auth-form hidden">
+                    <div class="form-group">
+                        <label for="registerUsername">
+                            <i class="fas fa-user"></i>
+                            Username
+                        </label>
+                        <input 
+                            type="text" 
+                            id="registerUsername"
+                            name="username" 
+                            placeholder="Choose a username"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerPassword">
+                            <i class="fas fa-lock"></i>
+                            Password
+                        </label>
+                        <div class="password-input">
+                            <input 
+                                type="password" 
+                                id="registerPassword"
+                                name="password" 
+                                placeholder="Choose a password"
+                                required
+                            >
+                            <button type="button" class="toggle-password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <p class="error-message" id="registerError"></p>
+
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-user-plus"></i>
+                        Create Account
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div id="mainContent" class="main-content hidden">
+            <!-- Header Section -->
+            <nav class="app-header">
+                <div class="header-left">
+                    <div class="app-brand">
+                        <i class="fas fa-brain"></i>
+                        <h1>Intelligent Drive</h1>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="theme-switch">
+                        <button class="theme-btn" id="themeToggle">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </div>
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search files and folders...">
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Main Container -->
+            <div class="app-container">
+                <!-- Sidebar -->
+                <aside class="app-sidebar">
+                    <div class="sidebar-actions">
+                        <button class="action-btn primary" onclick="window.imageUploader.showModal('uploadDialog')">
+                            <i class="fas fa-plus"></i>
+                            <span>New Upload</span>
+                        </button>
+                    </div>
+                    
+                    <nav class="sidebar-nav">
+                        <a href="#" class="nav-item active" data-view="home">
+                            <i class="fas fa-home"></i>
+                            <span>Home</span>
+                        </a>
+                        <a href="#" class="nav-item" data-view="recent">
+                            <i class="fas fa-clock"></i>
+                            <span>Recent</span>
+                        </a>
+                        <a href="#" class="nav-item" data-view="starred">
+                            <i class="fas fa-star"></i>
+                            <span>Starred</span>
+                        </a>
+                        <a href="#" class="nav-item" data-view="trash">
+                            <i class="fas fa-trash"></i>
+                            <span>Trash</span>
+                        </a>
+                    </nav>
+
+                    <div class="storage-info">
+                        <div class="storage-text">
+                            <span>Storage Used</span>
+                            <span>5.2GB / 15GB</span>
+                        </div>
+                        <div class="storage-bar">
+                            <div class="storage-fill" style="width: 35%"></div>
+                        </div>
+                    </div>
+
+                    <button id="logoutBtn" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </button>
+                </aside>
+
+                <!-- Main Content Area -->
+                <main class="content-wrapper">
+                    <!-- Breadcrumb -->
+                    <div class="breadcrumb" id="breadcrumb">
+                        <i class="fas fa-folder"></i>
+                        <span class="breadcrumb-item" data-id="">My Drive</span>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="quick-actions">
+                        <button class="action-btn" onclick="window.imageUploader.showModal('folderDialog')">
+                            <i class="fas fa-folder-plus"></i>
+                            <span>New Folder</span>
+                        </button>
+                        <button class="action-btn" onclick="window.imageUploader.showModal('uploadDialog')">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span>Upload Files</span>
+                        </button>
+                        <div class="view-options">
+                            <button class="view-btn active">
+                                <i class="fas fa-th"></i>
+                            </button>
+                            <button class="view-btn">
+                                <i class="fas fa-list"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Content Sections -->
+                    <div class="content-sections">
+                        <!-- Folders Section -->
+                        <section class="content-section">
+                            <div class="section-header">
+                                <h2><i class="fas fa-folder"></i> Folders</h2>
+                            </div>
+                            <div id="foldersContainer" class="folders-grid"></div>
+                        </section>
+
+                        <!-- Files Section -->
+                        <section class="content-section">
+                            <div class="section-header">
+                                <h2><i class="fas fa-image"></i> Files</h2>
+                            </div>
+                            <div id="imageGallery" class="gallery"></div>
+                        </section>
+                    </div>
+                </main>
+            </div>
+
+            <!-- Modals -->
+            <div id="folderDialog" class="modal">
+                <div class="modal-content">
+                    <h3>
+                        <i class="fas fa-folder-plus"></i>
+                        Create New Folder
+                    </h3>
+                    <form id="createFolderForm">
+                        <input 
+                            type="text" 
+                            name="folderName" 
+                            placeholder="Enter folder name" 
+                            required
+                            autocomplete="off"
+                        >
+                        <div class="modal-buttons">
+                            <button type="button" class="cancel-btn" onclick="closeModal('folderDialog')">
+                                <i class="fas fa-times"></i>
+                                Cancel
+                            </button>
+                            <button type="submit">
+                                <i class="fas fa-check"></i>
+                                Create
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
 
-            <div id="loadingIndicator"
-                class="hidden text-center mt-6 text-indigo-600 dark:text-indigo-700 animate-pulse">
-                <div class="inline-flex items-center">
-                    <svg class="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"
-                            fill="none"></circle>
-                        <path class="opacity-75" fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                        </path>
-                    </svg>
-                    Đang tìm kiếm...
+            <div id="uploadDialog" class="modal">
+                <div class="modal-content">
+                    <h3>Upload Files</h3>
+                    <form id="uploadForm">
+                        <input type="file" name="files" multiple accept="image/*" required>
+                        <div class="modal-buttons">
+                            <button type="button" class="cancel-btn" onclick="closeModal('uploadDialog')">Cancel</button>
+                            <button type="submit">Upload</button>
+                        </div>
+                    </form>
+                    <div id="uploadProgress" class="progress-bar hidden">
+                        <div class="progress"></div>
+                    </div>
                 </div>
             </div>
-
-            <div id="results" class="mt-6 space-y-6"></div>
         </div>
     </div>
-
-    <script>
-        const searchInput = document.getElementById('searchInput');
-        const resultsDiv = document.getElementById('results');
-        const loadingIndicator = document.getElementById('loadingIndicator');
-        const themeToggle = document.getElementById('themeToggle');
-        const sunIcon = document.getElementById('sunIcon');
-        const moonIcon = document.getElementById('moonIcon');
-        let searchTimeout;
-
-        // Theme toggle functionality
-        function updateTheme(isDark) {
-            if (isDark) {
-                document.documentElement.classList.add('dark');
-                sunIcon.classList.remove('hidden');
-                moonIcon.classList.add('hidden');
-            } else {
-                document.documentElement.classList.remove('dark');
-                sunIcon.classList.add('hidden');
-                moonIcon.classList.remove('hidden');
-            }
-            localStorage.setItem('darkMode', isDark);
-        }
-
-        // Check for saved theme preference
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const savedTheme = localStorage.getItem('darkMode');
-        updateTheme(savedTheme === 'true' || (savedTheme === null && prefersDark));
-
-        // Theme toggle event listener
-        themeToggle.addEventListener('click', () => {
-            const isDark = !document.documentElement.classList.contains('dark');
-            updateTheme(isDark);
-        });
-
-        function highlightText(text, query) {
-            if (!query) return text;
-            const regex = new RegExp(`(${query})`, 'gi');
-            return text.replace(regex, '<mark>$1</mark>');
-        }
-
-        searchInput.addEventListener('input', function () {
-            clearTimeout(searchTimeout);
-
-            const query = this.value.trim();
-            if (query.length < 2) {
-                resultsDiv.innerHTML = '';
-                return;
-            }
-
-            loadingIndicator.classList.remove('hidden');
-            resultsDiv.innerHTML = '';
-
-            searchTimeout = setTimeout(() => {
-                fetch(`http://localhost:5500/search?q=${encodeURIComponent(query)}`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        loadingIndicator.classList.add('hidden');
-                        const results = data.results;
-
-                        if (results.length === 0) {
-                            resultsDiv.innerHTML = `
-                                <div class="text-center p-8 bg-gray-50 dark:bg-gray-100 rounded-xl border border-gray-200 dark:border-gray-300">
-                                    <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-600 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                    <p class="text-gray-600 dark:text-gray-800 text-lg">
-                                        Không tìm thấy kết quả cho "${query}"
-                                    </p>
-                                </div>
-                            `;
-                            return;
-                        }
-
-                        resultsDiv.innerHTML = results.map(result => `
-                            <div class="border border-gray-200 dark:border-gray-300 p-6 rounded-xl 
-                                        bg-white dark:bg-white hover:bg-gray-50 dark:hover:bg-gray-100 
-                                        transition-all duration-300 shadow-sm hover:shadow-md">
-                                <h3 class="font-semibold text-lg text-indigo-700 dark:text-indigo-800 mb-3">
-                                    ${highlightText(result.question, query)}
-                                </h3>
-                                <div class="text-gray-700 dark:text-black mb-4 leading-relaxed">
-                                    <span class="font-medium text-gray-900 dark:text-black">Đáp án:</span> 
-                                    ${highlightText(result.answer, query)}
-                                </div>
-                                <div class="flex items-center text-sm text-gray-500 dark:text-gray-600 space-x-4">
-                                    <span class="font-medium text-gray-600 dark:text-gray-800">Môn học:</span>
-                                    <span class="dark:text-gray-700">${result.courseName}</span>
-                                    <span class="text-indigo-500 dark:text-indigo-700 font-medium">${result.courseCode}</span>
-                                </div>
-                            </div>
-                        `).join('');
-                    })
-                    .catch(error => {
-                        loadingIndicator.classList.add('hidden');
-                        console.error('Search error:', error);
-                        resultsDiv.innerHTML = `
-                            <div class="text-center p-8 bg-red-50 dark:bg-red-100 rounded-xl border border-red-200 dark:border-red-300">
-                                <svg class="mx-auto h-12 w-12 text-red-400 dark:text-red-600 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                <p class="text-red-600 dark:text-red-700 text-lg">
-                                    Đã xảy ra lỗi khi tìm kiếm: ${error.message}
-                                </p>
-                            </div>
-                        `;
-                    });
-            }, 500);
-        });
-    </script>
+    <div id="toastContainer" class="toast-container"></div>
+    <div id="imageViewerModal" class="modal image-viewer-modal hidden">
+        <div class="image-viewer-content">
+            <button class="close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+            <button class="nav-btn prev-btn">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="nav-btn next-btn">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            <div class="image-container">
+                <img src="" alt="" id="viewerImage">
+            </div>
+            <div class="image-info">
+                <h3 class="image-name"></h3>
+                <p class="image-date"></p>
+            </div>
+        </div>
+    </div>
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/toast.js"></script>
+    <script src="js/particles.js"></script>
+    <script src="js/features.js"></script>
 </body>
-
 </html>

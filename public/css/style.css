@@ -4,7 +4,8 @@
     box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
     height: 100%;
     overflow: hidden;
 }
@@ -43,9 +44,11 @@ body {
     0% {
         background-position: 0% 50%;
     }
+
     50% {
         background-position: 100% 50%;
     }
+
     100% {
         background-position: 0% 50%;
     }
@@ -88,9 +91,11 @@ body {
     0% {
         transform: translateY(0px);
     }
+
     50% {
         transform: translateY(-20px);
     }
+
     100% {
         transform: translateY(0px);
     }
@@ -101,7 +106,7 @@ body {
     font-size: 32px;
     margin-bottom: 10px;
     font-weight: 700;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .auth-subtitle {
@@ -345,6 +350,7 @@ body {
     0% {
         transform: translateY(0) rotate(0deg);
     }
+
     100% {
         transform: translateY(-100vh) rotate(360deg);
     }
@@ -545,7 +551,36 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 24px;
+    background: white;
+    padding: 12px 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.breadcrumb i {
+    color: #64748b;
+    font-size: 14px;
+}
+
+.breadcrumb-item {
+    color: #1a73e8;
+    cursor: pointer;
+    font-size: 14px;
+    transition: color 0.2s ease;
+}
+
+.breadcrumb-item:hover {
+    color: #1557b0;
+    text-decoration: underline;
+}
+
+.breadcrumb-item.home-link {
+    font-weight: 500;
+}
+
+.fa-chevron-right {
+    font-size: 12px;
     color: #64748b;
 }
 
@@ -641,18 +676,80 @@ body {
 /* Folders Grid */
 .folders-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    /* Tăng kích thước tối thiểu */
     gap: 16px;
     padding: 24px;
 }
 
+.folders-grid.list-view {
+    grid-template-columns: 1fr;
+}
+
 .folder-item {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
+    position: relative !important;
+    background: white;
+    padding: 15px;
     border-radius: 8px;
-    padding: 16px;
-    cursor: pointer;
-    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+    width: 100%;
+    /* Đảm bảo chiều rộng tối đa */
+}
+
+.folder-item.new {
+    position: relative !important;
+    background: rgba(255, 68, 68, 0.05) !important;
+    border: 2px solid rgba(255, 68, 68, 0.2) !important;
+    animation: newFolderPulse 2s infinite !important;
+}
+
+/* Badge NEW cho folder mới */
+.folder-item .new-badge {
+    position: absolute !important;
+    top: -10px !important;
+    right: -10px !important;
+    background: #ff4444 !important;
+    color: white !important;
+    padding: 4px 8px !important;
+    border-radius: 12px !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    z-index: 999 !important;
+    box-shadow: 0 2px 4px rgba(255, 68, 68, 0.3) !important;
+    animation: pulse 2s infinite !important;
+    pointer-events: none !important;
+}
+
+@keyframes newFolderPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(255, 68, 68, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 68, 68, 0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 
 .folder-item:hover {
@@ -671,9 +768,10 @@ body {
 }
 
 .gallery-item {
-    position: relative;
+    position: relative !important;
     border-radius: 8px;
-    overflow: hidden;
+    overflow: visible !important;
+    /* Thay đổi từ hidden sang visible */
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     transition: all 0.2s;
 }
@@ -685,8 +783,10 @@ body {
 
 .gallery-item img {
     width: 100%;
-    height: 150px;
+    height: 200px;
     object-fit: cover;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 .content-area {
@@ -700,7 +800,7 @@ body {
     padding: 10px 20px;
     margin-bottom: 20px;
     border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .breadcrumb-item {
@@ -713,62 +813,148 @@ body {
 }
 
 .context-menu {
-    display: none;
     position: fixed;
     background: white;
-    border-radius: 4px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     padding: 5px 0;
+    min-width: 150px;
     z-index: 1000;
+    display: none;
 }
 
-.menu-item {
-    padding: 8px 20px;
+.context-menu-item {
+    padding: 8px 15px;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 10px;
 }
 
-.menu-item:hover {
-    background-color: #f1f3f4;
-}
-
-.menu-item i {
-    width: 20px;
+.context-menu-item:hover {
+    background: #f5f5f5;
 }
 
 .modal {
-    display: none;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
     z-index: 1000;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.modal.hidden {
+    display: none !important;
 }
 
 .modal-content {
     position: relative;
-    background-color: white;
-    margin: 15% auto;
-    padding: 20px;
-    width: 80%;
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    width: 90%;
     max-width: 500px;
+    margin: 0 auto;
+    animation: slideIn 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* Style cho form trong modal */
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
     border-radius: 8px;
+    font-size: 16px;
+}
+
+.modal-content input:focus {
+    outline: none;
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
 }
 
 .modal-buttons {
     display: flex;
     justify-content: flex-end;
-    gap: 10px;
-    margin-top: 20px;
+    gap: 12px;
+    margin-top: 24px;
 }
 
-.cancel-btn {
-    background-color: #f1f3f4;
+.modal-buttons button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.modal-buttons button[type="submit"] {
+    background: #1a73e8;
+    color: white;
+    border: none;
+}
+
+.modal-buttons button[type="submit"]:hover {
+    background: #1557b0;
+    transform: translateY(-1px);
+}
+
+.modal-buttons .cancel-btn {
+    background: #f1f3f4;
     color: #5f6368;
+    border: 1px solid #ddd;
+}
+
+.modal-buttons .cancel-btn:hover {
+    background: #e8eaed;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        margin: 20px auto;
+        padding: 16px;
+    }
 }
 
 .folders-container {
@@ -786,7 +972,7 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .folder-item:hover {
@@ -829,7 +1015,7 @@ body {
     padding: 20px;
     border-radius: 8px;
     margin-bottom: 20px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .section h2 {
@@ -895,7 +1081,7 @@ body {
 .toast {
     background: white;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     margin-top: 10px;
     min-width: 300px;
     padding: 16px;
@@ -1006,6 +1192,7 @@ body {
         transform: translateX(100%);
         opacity: 0;
     }
+
     to {
         transform: translateX(0);
         opacity: 1;
@@ -1016,6 +1203,7 @@ body {
     from {
         width: 100%;
     }
+
     to {
         width: 0;
     }
@@ -1031,6 +1219,7 @@ body {
         transform: translateX(0);
         opacity: 1;
     }
+
     to {
         transform: translateX(100%);
         opacity: 0;
@@ -1040,67 +1229,114 @@ body {
 /* New Item Badge */
 .new-badge {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    background: #ff4081;
+    top: -8px;
+    right: -8px;
+    background: #ff4444;
     color: white;
     padding: 4px 8px;
     border-radius: 12px;
     font-size: 12px;
     font-weight: bold;
     z-index: 2;
-    box-shadow: 0 2px 4px rgba(255, 64, 129, 0.3);
+    box-shadow: 0 2px 4px rgba(255, 68, 68, 0.3);
     animation: pulse 2s infinite;
-    transition: all 0.3s ease;
 }
 
-.new-badge.removing {
-    animation: fadeOut 0.3s ease forwards;
-}
-
-@keyframes fadeOut {
-    from {
-        opacity: 1;
+/* Animation cho badge */
+@keyframes pulse {
+    0% {
         transform: scale(1);
     }
-    to {
-        opacity: 0;
-        transform: scale(0.8);
-    }
-}
 
-/* Highlight mục mới */
-.folder-item.new, .gallery-item.new {
-    position: relative;
-    animation: newItemHighlight 5s ease-out;
-}
+    50% {
+        transform: scale(1.1);
+    }
 
-@keyframes newItemHighlight {
-    0% {
-        box-shadow: 0 0 0 2px #ff4081;
-    }
-    90% {
-        box-shadow: 0 0 0 2px #ff4081;
-    }
     100% {
-        box-shadow: none;
+        transform: scale(1);
     }
 }
 
-/* Điều chỉnh vị trí badge cho folder */
-.folder-item .new-badge {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
+/* Style cho item mới */
+.folder-item.new {
+    position: relative;
+    background: rgba(255, 68, 68, 0.05) !important;
+    border: 1px solid rgba(255, 68, 68, 0.2) !important;
+    animation: newFolderPulse 2s infinite;
 }
 
-/* Điều chỉnh vị trí badge cho gallery item */
-.gallery-item .new-badge {
+.new-badge {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 3;
+    top: -8px;
+    right: -8px;
+    background: #ff4444;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    z-index: 2;
+    box-shadow: 0 2px 4px rgba(255, 68, 68, 0.3);
+    animation: pulse 2s infinite;
+}
+
+@keyframes newFolderPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(255, 68, 68, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 68, 68, 0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Vị trí badge cho từng loại item */
+.folder-item .new-badge {
+    top: -8px;
+    right: -8px;
+}
+
+.gallery-item .new-badge {
+    top: 8px;
+    right: 8px;
+}
+
+/* Hiệu ứng highlight cho item mới */
+.folder-item.new,
+.gallery-item.new {
+    animation: newItemGlow 2s ease-in-out infinite;
+}
+
+@keyframes newItemGlow {
+    0% {
+        box-shadow: 0 0 5px rgba(255, 68, 68, 0.2);
+    }
+
+    50% {
+        box-shadow: 0 0 10px rgba(255, 68, 68, 0.4);
+    }
+
+    100% {
+        box-shadow: 0 0 5px rgba(255, 68, 68, 0.2);
+    }
 }
 
 /* Tùy chỉnh thanh cuộn trong auth-box nếu cần */
@@ -1402,7 +1638,8 @@ body {
 }
 
 /* Loading and Error States */
-.loading, .error {
+.loading,
+.error {
     text-align: center;
     padding: 40px;
     color: var(--text-secondary);
@@ -1740,6 +1977,7 @@ body {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -1750,6 +1988,7 @@ body {
         transform: translateY(-20px);
         opacity: 0;
     }
+
     to {
         transform: translateY(0);
         opacity: 1;
@@ -1890,6 +2129,7 @@ body {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -1900,6 +2140,7 @@ body {
         transform: translateY(-20px);
         opacity: 0;
     }
+
     to {
         transform: translateY(0);
         opacity: 1;
@@ -2090,6 +2331,7 @@ body {
         transform: scale(0.5);
         opacity: 0;
     }
+
     to {
         transform: scale(1);
         opacity: 1;
@@ -2195,6 +2437,7 @@ body {
 
 /* Mobile Responsive Styles */
 @media screen and (max-width: 768px) {
+
     /* Header */
     .app-header {
         padding: 0 16px;
@@ -2423,7 +2666,8 @@ body {
     background: var(--bg-secondary);
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
     z-index: 1000;
-    display: none; /* Ẩn mặc định */
+    display: none;
+    /* Ẩn mặc định */
 }
 
 .nav-list {
@@ -2459,20 +2703,21 @@ body {
 
 /* Responsive adjustments */
 @media screen and (max-width: 768px) {
+
     /* Chỉ hiển thị navigation khi ở main content và không ở auth form */
     body:not(.auth-active) .navigation {
         display: block;
     }
-    
+
     /* Ẩn navigation khi ở auth form */
     body.auth-active .navigation {
         display: none;
     }
-    
+
     .app-sidebar {
         display: none;
     }
-    
+
     .content-wrapper {
         margin-left: 0;
         padding-bottom: 70px;
@@ -2511,4 +2756,909 @@ body {
     background: var(--bg-secondary);
     border-radius: 8px;
     margin: 10px 0;
-} 
+}
+
+/* Style cho form đăng ký */
+.auth-form {
+    max-height: 100%;
+    overflow-y: auto;
+    /* Tùy chnh thanh cuộn */
+    scrollbar-width: thin;
+    /* Cho Firefox */
+    scrollbar-color: transparent transparent;
+    /* Cho Firefox */
+}
+
+/* Cho Chrome, Safari và Edge */
+.auth-form::-webkit-scrollbar {
+    width: 6px;
+    /* Độ rộng thanh cuộn */
+}
+
+.auth-form::-webkit-scrollbar-track {
+    background: transparent;
+    /* Màu nền của track */
+}
+
+.auth-form::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    /* Màu của thumb */
+    border-radius: 3px;
+}
+
+/* Chỉ hiện thanh cuộn khi hover vào form */
+.auth-form:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    /* Màu của thumb khi hover */
+}
+
+/* Đảm bảo auth-box không bị overflow */
+.auth-box {
+    max-height: 90vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Đảm bảo các form có thể scroll */
+.auth-form {
+    flex: 1;
+    padding-right: 6px;
+    /* Thêm padding để tránh nội dung bị che bởi thanh cuộn */
+}
+
+.folder-item {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+}
+
+.folder-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    cursor: pointer;
+}
+
+.folder-actions {
+    display: flex;
+    gap: 8px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.folder-item:hover .folder-actions {
+    opacity: 1;
+}
+
+.copy-id-btn {
+    background: none;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.copy-id-btn:hover {
+    background: #f1f5f9;
+    color: #1e293b;
+}
+
+/* Style cho nút Connect */
+.action-btn[data-action="connect"] {
+    background-color: #4CAF50;
+}
+
+.action-btn[data-action="connect"]:hover {
+    background-color: #45a049;
+}
+
+/* Style cho form connect */
+#connectDialog .modal-content {
+    max-width: 400px;
+}
+
+#connectDialog input {
+    font-family: monospace;
+    letter-spacing: 1px;
+}
+
+#connectDialog .modal-buttons button[type="submit"] {
+    background-color: #4CAF50;
+}
+
+#connectDialog .modal-buttons button[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+.folder-item .owner {
+    font-size: 0.8em;
+    color: #666;
+    margin-left: 8px;
+}
+
+.new-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #ff4444;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 0.7em;
+    font-weight: bold;
+}
+
+.folders-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+    padding: 15px;
+}
+
+.folders-grid.list-view {
+    grid-template-columns: 1fr;
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.gallery-item {
+    position: relative;
+    background: white;
+    border-radius: 8px;
+    overflow: visible !important;
+    /* Thay đổi từ hidden sang visible */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s;
+}
+
+.gallery-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.file-info {
+    padding: 12px;
+}
+
+.file-name {
+    font-size: 14px;
+    color: #1e293b;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.file-date {
+    font-size: 12px;
+    color: #64748b;
+}
+
+.download-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 4px;
+    padding: 6px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.gallery-item:hover .download-btn {
+    opacity: 1;
+}
+
+/* Style cho folder mới */
+.folder-item.new {
+    position: relative !important;
+    background: rgba(255, 68, 68, 0.05) !important;
+    border: 1px solid rgba(255, 68, 68, 0.2) !important;
+    animation: newFolderPulse 2s infinite !important;
+}
+
+@keyframes newFolderPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(255, 68, 68, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 68, 68, 0);
+    }
+}
+
+.new-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #ff4444;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    z-index: 2;
+    box-shadow: 0 2px 4px rgba(255, 68, 68, 0.3);
+    animation: pulse 2s infinite;
+}
+
+/* Style cho badge NEW - thêm !important để đảm bảo ưu tiên */
+.new-badge {
+    position: absolute !important;
+    top: -8px !important;
+    right: -8px !important;
+    background: #ff4444 !important;
+    color: white !important;
+    padding: 4px 8px !important;
+    border-radius: 12px !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    z-index: 999 !important;
+    /* Tăng z-index để đảm bảo hiển thị trên cùng */
+    box-shadow: 0 2px 4px rgba(255, 68, 68, 0.3) !important;
+    animation: pulse 2s infinite !important;
+    pointer-events: none;
+    /* Để badge không cản trở click events */
+}
+
+/* Style cho folder mới */
+.folder-item.new {
+    position: relative !important;
+    background: rgba(255, 68, 68, 0.05) !important;
+    border: 1px solid rgba(255, 68, 68, 0.2) !important;
+    animation: newFolderPulse 2s infinite !important;
+}
+
+/* Đảm bảo folder-item có position relative */
+.folder-item {
+    position: relative !important;
+}
+
+.shared-badge {
+    font-size: 12px;
+    color: #666;
+    margin-left: 8px;
+    padding: 2px 6px;
+    background: #f0f0f0;
+    border-radius: 4px;
+}
+
+/* Share Management Modal */
+.share-management {
+    max-width: 600px !important;
+}
+
+.shares-list {
+    max-height: 400px;
+    overflow-y: auto;
+    margin: 20px 0;
+}
+
+.share-item {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    gap: 16px;
+}
+
+.share-item:last-child {
+    border-bottom: none;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 150px;
+}
+
+.user-info i {
+    color: #64748b;
+}
+
+.permissions {
+    display: flex;
+    gap: 16px;
+    flex: 1;
+}
+
+.permission-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.permission-toggle input {
+    width: 16px;
+    height: 16px;
+}
+
+.remove-share-btn {
+    background: none;
+    border: none;
+    color: #ef4444;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.remove-share-btn:hover {
+    background: #fee2e2;
+}
+
+.no-shares {
+    text-align: center;
+    color: #64748b;
+    padding: 20px;
+}
+
+.manage-share-btn {
+    background: none;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.manage-share-btn:hover {
+    background: #f1f5f9;
+    color: #1e293b;
+}
+
+/* Confirmation Modal */
+.confirmation-modal .modal-content {
+    max-width: 400px !important;
+    text-align: center;
+    padding: 24px !important;
+}
+
+.confirmation-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+.confirmation-icon.warning {
+    color: #ef4444;
+}
+
+.confirmation-icon.warning i {
+    animation: pulse 1s infinite;
+}
+
+.confirmation-dialog h3 {
+    color: #1e293b;
+    margin-bottom: 12px;
+    font-size: 20px;
+}
+
+.confirmation-dialog p {
+    color: #64748b;
+    margin-bottom: 24px;
+}
+
+.confirmation-dialog strong {
+    color: #1e293b;
+}
+
+.confirmation-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
+.confirmation-buttons button {
+    padding: 8px 24px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.confirmation-buttons .cancel-btn {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+.confirmation-buttons .cancel-btn:hover {
+    background: #e2e8f0;
+    color: #1e293b;
+}
+
+.confirmation-buttons .confirm-btn {
+    background: #ef4444;
+    color: white;
+}
+
+.confirmation-buttons .confirm-btn:hover {
+    background: #dc2626;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Style cho folder item */
+.folder-item {
+    position: relative !important;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.folder-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+}
+
+.folder-content i {
+    color: #64748b;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+/* Container cho tên folder và shared badge */
+.folder-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+
+/* Tên folder */
+.folder-name {
+    font-size: 14px;
+    color: #1e293b;
+    min-width: 100px;
+}
+
+/* Badge shared */
+.shared-badge {
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 6px;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #2563eb;
+    /* Màu xanh */
+    color: white;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.shared-badge i {
+    font-size: 11px;
+    color: white;
+}
+
+/* Badge shared - Dark theme */
+[data-theme="dark"] .shared-badge {
+    background: #3b82f6;
+    /* Màu xanh nhạt hơn cho dark mode */
+    color: white;
+    border: none;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+}
+
+[data-theme="dark"] .shared-badge i {
+    color: white;
+}
+
+/* Hover effect */
+.shared-badge:hover {
+    background: #1d4ed8;
+    /* Màu xanh đậm khi hover */
+    transform: translateY(-1px);
+}
+
+[data-theme="dark"] .shared-badge:hover {
+    background: #2563eb;
+    /* Màu xanh đậm hơn khi hover trong dark mode */
+    box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);
+}
+
+/* Phần actions */
+.folder-actions {
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+}
+
+/* Grid layout cho folders */
+.folders-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    /* Tăng kích thước tối thiểu */
+    gap: 16px;
+    padding: 24px;
+}
+
+.folders-grid.list-view {
+    grid-template-columns: 1fr;
+}
+
+/* Badge shared - Light theme */
+.shared-badge {
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 6px;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #2563eb;
+    /* Màu xanh */
+    color: white;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.shared-badge i {
+    font-size: 11px;
+    color: white;
+}
+
+/* Badge shared - Dark theme */
+[data-theme="dark"] .shared-badge {
+    background: #3b82f6;
+    /* Màu xanh nhạt hơn cho dark mode */
+    color: white;
+    border: none;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+}
+
+[data-theme="dark"] .shared-badge i {
+    color: white;
+}
+
+/* Hover effect */
+.shared-badge:hover {
+    background: #1d4ed8;
+    /* Màu xanh đậm khi hover */
+    transform: translateY(-1px);
+}
+
+[data-theme="dark"] .shared-badge:hover {
+    background: #2563eb;
+    /* Màu xanh đậm hơn khi hover trong dark mode */
+    box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);
+}
+
+/* Light mode */
+.breadcrumb i {
+    color: #64748b;
+    font-size: 14px;
+}
+
+/* Dark mode - đổi màu icon sang xanh */
+[data-theme="dark"] .breadcrumb i {
+    color: #3b82f6;
+    /* Màu xanh giống shared badge */
+}
+
+[data-theme="dark"] .breadcrumb .fa-folder {
+    color: #3b82f6;
+    /* Màu xanh cho icon folder */
+}
+
+[data-theme="dark"] .breadcrumb .fa-chevron-right {
+    color: #3b82f6;
+    /* Màu xanh cho icon mũi tên */
+}
+
+/* Hover effect cho dark mode */
+[data-theme="dark"] .breadcrumb-item:hover {
+    color: #60a5fa;
+    /* Màu xanh nhạt hơn khi hover */
+}
+
+/* Light mode - icon folder */
+.folder-content i.fa-folder {
+    color: #64748b;
+    font-size: 20px;
+}
+
+/* Dark mode - icon folder màu xanh */
+[data-theme="dark"] .folder-content i.fa-folder {
+    color: #3b82f6;
+    /* Màu xanh giống shared badge */
+}
+
+/* Hover effect cho icon folder trong dark mode */
+[data-theme="dark"] .folder-item:hover .folder-content i.fa-folder {
+    color: #60a5fa;
+    /* Màu xanh nhạt hơn khi hover */
+}
+
+.submit-btn:disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.submit-btn:disabled:hover {
+    background: #94a3b8;
+    box-shadow: none;
+    transform: none;
+}
+
+/* Loading spinner animation */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.fa-spinner {
+    animation: spin 1s linear infinite;
+}
+
+.tab-btn[style*="cursor: not-allowed"]:hover {
+    background: none;
+    transform: none;
+}
+
+.tab-btn[style*="cursor: not-allowed"]::before {
+    display: none;
+}
+
+.resend-code {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.resend-btn {
+    background: none;
+    border: none;
+    color: #3b82f6;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.resend-btn:hover:not(:disabled) {
+    background: #eff6ff;
+}
+
+.resend-btn:disabled {
+    color: #94a3b8;
+    cursor: not-allowed;
+}
+
+.countdown {
+    color: #64748b;
+    font-size: 14px;
+}
+
+.countdown.hidden {
+    display: none;
+}
+
+/* Resend Code Section */
+.resend-code {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 24px 0;
+    border: 1px dashed #e2e8f0;
+    transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .resend-code {
+    background: #1e293b;
+    border-color: #334155;
+}
+
+.resend-code:hover {
+    border-color: #3b82f6;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+}
+
+.resend-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+[data-theme="dark"] .resend-info {
+    border-color: #334155;
+}
+
+.resend-info i {
+    font-size: 24px;
+    color: #3b82f6;
+    margin-top: 4px;
+}
+
+.resend-text h4 {
+    margin: 0 0 4px 0;
+    font-size: 16px;
+    color: #1e293b;
+    font-weight: 600;
+}
+
+.resend-text p {
+    margin: 0;
+    font-size: 14px;
+    color: #64748b;
+}
+
+[data-theme="dark"] .resend-text h4 {
+    color: #e2e8f0;
+}
+
+[data-theme="dark"] .resend-text p {
+    color: #94a3b8;
+}
+
+.resend-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.resend-btn {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    color: #3b82f6;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] .resend-btn {
+    background: #2d3748;
+    border-color: #4a5568;
+    color: #60a5fa;
+}
+
+.resend-btn:hover:not(:disabled) {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(59, 130, 246, 0.2);
+}
+
+.resend-btn:disabled {
+    background: #f1f5f9;
+    border-color: #e2e8f0;
+    color: #94a3b8;
+    cursor: not-allowed;
+}
+
+[data-theme="dark"] .resend-btn:disabled {
+    background: #1e293b;
+    border-color: #334155;
+    color: #64748b;
+}
+
+.resend-btn i {
+    font-size: 14px;
+    transition: transform 0.3s ease;
+}
+
+.resend-btn:hover:not(:disabled) i {
+    transform: rotate(180deg);
+}
+
+.countdown {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #fff;
+    border-radius: 6px;
+    color: #64748b;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] .countdown {
+    background: #2d3748;
+    color: #9ca3af;
+}
+
+.countdown::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: #3b82f6;
+    border-radius: 50%;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+    }
+
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 6px rgba(59, 130, 246, 0);
+    }
+
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+    }
+}

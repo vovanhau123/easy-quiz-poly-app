@@ -1,12 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Image Upload System</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta property="og:title" content="Butterfly Drive - Cloud Storage Solution">
+    <meta property="og:description" content="A secure and elegant cloud storage platform for managing and sharing your files with ease.">
+    <meta property="og:image" content="/images/butterfly-drive-preview.jpg">
+    <meta property="og:url" content="https://your-domain.com">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Butterfly Drive">
+    <meta name="twitter:description" content="A secure and elegant cloud storage platform for managing and sharing your files with ease.">
+    <meta name="twitter:image" content="/images/butterfly-drive-preview.jpg">
 </head>
+
 <body>
     <div class="particles"></div>
     <div class="container">
@@ -19,11 +30,11 @@
                 <div class="corner corner-br"></div>
 
                 <div class="auth-header">
-                    <img src="images/logo.png" alt="Logo" class="auth-logo">
+                    <img src="image/logo.png" alt="Logo" class="auth-logo">
                     <h1>Welcome</h1>
                     <p class="auth-subtitle">Please login or create an account</p>
                 </div>
-                
+
                 <div class="tabs">
                     <button class="tab-btn active" data-form="login">
                         <i class="fas fa-sign-in-alt"></i> Login
@@ -40,13 +51,8 @@
                             <i class="fas fa-user"></i>
                             Username
                         </label>
-                        <input 
-                            type="text" 
-                            id="loginUsername"
-                            name="username" 
-                            placeholder="Enter your username"
-                            required
-                        >
+                        <input type="text" id="loginUsername" name="username" placeholder="Enter your username"
+                            required>
                     </div>
 
                     <div class="form-group">
@@ -55,20 +61,13 @@
                             Password
                         </label>
                         <div class="password-input">
-                            <input 
-                                type="password" 
-                                id="loginPassword"
-                                name="password" 
-                                placeholder="Enter your password"
-                                required
-                            >
+                            <input type="password" id="loginPassword" name="password" placeholder="Enter your password"
+                                required>
                             <button type="button" class="toggle-password">
                                 <i class="fas fa-eye"></i>
                             </button>
                         </div>
                     </div>
-
-                    <p class="error-message" id="loginError"></p>
 
                     <button type="submit" class="submit-btn">
                         <i class="fas fa-sign-in-alt"></i>
@@ -83,13 +82,16 @@
                             <i class="fas fa-user"></i>
                             Username
                         </label>
-                        <input 
-                            type="text" 
-                            id="registerUsername"
-                            name="username" 
-                            placeholder="Choose a username"
-                            required
-                        >
+                        <input type="text" id="registerUsername" name="username" placeholder="Choose a username"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerEmail">
+                            <i class="fas fa-envelope"></i>
+                            Email
+                        </label>
+                        <input type="email" id="registerEmail" name="email" placeholder="Enter your email" required>
                     </div>
 
                     <div class="form-group">
@@ -98,24 +100,51 @@
                             Password
                         </label>
                         <div class="password-input">
-                            <input 
-                                type="password" 
-                                id="registerPassword"
-                                name="password" 
-                                placeholder="Choose a password"
-                                required
-                            >
+                            <input type="password" id="registerPassword" name="password" placeholder="Choose a password"
+                                required>
                             <button type="button" class="toggle-password">
                                 <i class="fas fa-eye"></i>
                             </button>
                         </div>
                     </div>
 
-                    <p class="error-message" id="registerError"></p>
-
                     <button type="submit" class="submit-btn">
                         <i class="fas fa-user-plus"></i>
                         Create Account
+                    </button>
+                </form>
+
+                <!-- Verification Form -->
+                <form id="verificationForm" class="auth-form hidden">
+                    <div class="form-group">
+                        <label for="verificationCode">
+                            <i class="fas fa-key"></i>
+                            Verification Code
+                        </label>
+                        <input type="text" id="verificationCode" name="verificationCode"
+                            placeholder="Enter verification code" required>
+                    </div>
+
+                    <div class="resend-code">
+                        <div class="resend-info">
+                            <i class="fas fa-envelope-open-text"></i>
+                            <div class="resend-text">
+                                <h4>Check your inbox</h4>
+                                <p>We've sent a verification code to your email</p>
+                            </div>
+                        </div>
+                        <div class="resend-actions">
+                            <button type="button" id="resendCodeBtn" class="resend-btn">
+                                <i class="fas fa-sync-alt"></i>
+                                <span>Request New Code</span>
+                            </button>
+                            <span id="countdownTimer" class="countdown hidden">60s</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-check"></i>
+                        Verify Account
                     </button>
                 </form>
             </div>
@@ -128,7 +157,7 @@
                 <div class="header-left">
                     <div class="app-brand">
                         <i class="fas fa-brain"></i>
-                        <h1>Intelligent Drive</h1>
+                        <h1>Butterfly Drive</h1>
                     </div>
                 </div>
                 <div class="header-right">
@@ -154,7 +183,7 @@
                             <span>New Upload</span>
                         </button>
                     </div>
-                    
+
                     <nav class="sidebar-nav">
                         <a href="#" class="nav-item active" data-view="home" data-page="home">
                             <i class="fas fa-home"></i>
@@ -177,7 +206,7 @@
                     <div class="storage-info">
                         <div class="storage-text">
                             <span>Storage Used</span>
-                            <span>5.2GB / 15GB</span>
+                            <span>0.0GB / 15GB</span>
                         </div>
                         <div class="storage-bar">
                             <div class="storage-fill" style="width: 35%"></div>
@@ -200,13 +229,17 @@
 
                     <!-- Quick Actions -->
                     <div class="quick-actions">
-                        <button class="action-btn" onclick="window.imageUploader.showModal('folderDialog')">
+                        <button class="action-btn" data-action="createFolder">
                             <i class="fas fa-folder-plus"></i>
                             <span>New Folder</span>
                         </button>
-                        <button class="action-btn" onclick="window.imageUploader.showModal('uploadDialog')">
+                        <button class="action-btn" data-action="upload">
                             <i class="fas fa-cloud-upload-alt"></i>
                             <span>Upload Files</span>
+                        </button>
+                        <button class="action-btn" data-action="connect">
+                            <i class="fas fa-link"></i>
+                            <span>Connect</span>
                         </button>
                         <div class="view-options">
                             <button class="view-btn active">
@@ -240,22 +273,17 @@
             </div>
 
             <!-- Modals -->
-            <div id="folderDialog" class="modal">
+            <div id="folderDialog" class="modal hidden">
                 <div class="modal-content">
                     <h3>
                         <i class="fas fa-folder-plus"></i>
                         Create New Folder
                     </h3>
                     <form id="createFolderForm">
-                        <input 
-                            type="text" 
-                            name="folderName" 
-                            placeholder="Enter folder name" 
-                            required
-                            autocomplete="off"
-                        >
+                        <input type="text" name="folderName" placeholder="Enter folder name" required
+                            autocomplete="off">
                         <div class="modal-buttons">
-                            <button type="button" class="cancel-btn" onclick="closeModal('folderDialog')">
+                            <button type="button" class="cancel-btn">
                                 <i class="fas fa-times"></i>
                                 Cancel
                             </button>
@@ -268,19 +296,50 @@
                 </div>
             </div>
 
-            <div id="uploadDialog" class="modal">
+            <div id="uploadDialog" class="modal hidden">
                 <div class="modal-content">
-                    <h3>Upload Files</h3>
+                    <h3>
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        Upload Files
+                    </h3>
                     <form id="uploadForm">
                         <input type="file" name="files" multiple accept="image/*" required>
                         <div class="modal-buttons">
-                            <button type="button" class="cancel-btn" onclick="closeModal('uploadDialog')">Cancel</button>
-                            <button type="submit">Upload</button>
+                            <button type="button" class="cancel-btn">
+                                <i class="fas fa-times"></i>
+                                Cancel
+                            </button>
+                            <button type="submit">
+                                <i class="fas fa-upload"></i>
+                                Upload
+                            </button>
                         </div>
                     </form>
                     <div id="uploadProgress" class="progress-bar hidden">
                         <div class="progress"></div>
                     </div>
+                </div>
+            </div>
+
+            <div id="connectDialog" class="modal hidden">
+                <div class="modal-content">
+                    <h3>
+                        <i class="fas fa-link"></i>
+                        Connect to Shared Folder
+                    </h3>
+                    <form id="connectFolderForm">
+                        <input type="text" name="folderId" placeholder="Enter folder ID" required autocomplete="off">
+                        <div class="modal-buttons">
+                            <button type="button" class="cancel-btn">
+                                <i class="fas fa-times"></i>
+                                Cancel
+                            </button>
+                            <button type="submit">
+                                <i class="fas fa-link"></i>
+                                Connect
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -339,5 +398,8 @@
     <script src="js/toast.js"></script>
     <script src="js/particles.js"></script>
     <script src="js/features.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
 </body>
+
 </html>
